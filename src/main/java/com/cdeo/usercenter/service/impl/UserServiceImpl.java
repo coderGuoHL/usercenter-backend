@@ -46,12 +46,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 2. 账户长度 **不小于** 4 位
-        if (userAccount.length() < 4) {
+        if (userAccount.length() < 2) {
             return -1;
         }
 
         // 3. 密码就 **不小于** 8 位吧
-        if (password.length() < 8 || checkPassword.length() < 8) {
+        if (password.length() < 4 || checkPassword.length() < 4) {
             return -1;
         }
 
@@ -140,18 +140,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 用户信息脱敏
-        User handledUser = new User();
-        handledUser.setId(user.getId());
-        handledUser.setUserAccount(user.getUserAccount());
-        handledUser.setUsername(user.getUsername());
-        handledUser.setAvatarUrl(user.getAvatarUrl());
-        handledUser.setGender(user.getGender());
-        handledUser.setUserRole(user.getUserRole());
-        handledUser.setUserStatus(user.getUserStatus());
-        handledUser.setEmail(user.getEmail());
-        handledUser.setUserStatus(user.getUserStatus());
-        handledUser.setCreateTime(new Date());
-        handledUser.setUpdateTime(new Date());
+        User handledUser = getSafeUser(user);
 
         // 设置信息到session中
         request.getSession().setAttribute(SESSION_USER_ATTR_CODE, handledUser);
@@ -191,6 +180,27 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         List<User> users = this.list(queryWrapper);
 
         return users;
+    }
+
+    public User getSafeUser(User user) {
+        if (user == null) {
+            return null;
+        }
+
+        User handledUser = new User();
+        handledUser.setId(user.getId());
+        handledUser.setUserAccount(user.getUserAccount());
+        handledUser.setUsername(user.getUsername());
+        handledUser.setAvatarUrl(user.getAvatarUrl());
+        handledUser.setGender(user.getGender());
+        handledUser.setUserRole(user.getUserRole());
+        handledUser.setUserStatus(user.getUserStatus());
+        handledUser.setEmail(user.getEmail());
+        handledUser.setUserStatus(user.getUserStatus());
+        handledUser.setCreateTime(new Date());
+        handledUser.setUpdateTime(new Date());
+
+        return handledUser;
     }
 }
 
