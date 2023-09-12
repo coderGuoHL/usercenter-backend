@@ -182,6 +182,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return users;
     }
 
+    @Override
+    public User getCurrentUser(HttpServletRequest request) {
+        User user = (User) request.getSession().getAttribute(SESSION_USER_ATTR_CODE);
+
+        if (user == null) {
+            return null;
+        }
+
+        Long id = user.getId();
+        User dbUser = this.getById(id);
+        return this.getSafeUser(dbUser);
+    }
+
+    @Override
     public User getSafeUser(User user) {
         if (user == null) {
             return null;

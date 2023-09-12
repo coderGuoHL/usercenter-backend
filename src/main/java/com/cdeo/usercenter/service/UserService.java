@@ -20,4 +20,7 @@ public interface UserService extends IService<User> {
 
     List<User> searchUserList(String username, HttpServletRequest request);
 
+    User getCurrentUser(HttpServletRequest request);
+
+    User getSafeUser(User user);
 }

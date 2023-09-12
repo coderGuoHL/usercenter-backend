@@ -69,4 +69,10 @@ public class UserController {
         return userService.searchUserList(username, httpServletRequest);
     }
 
+    @ResponseBody
+    @PostMapping("/currentUser")
+    public User currentUser(HttpServletRequest request) {
+        return userService.getCurrentUser(request);
+    }
+
 }
