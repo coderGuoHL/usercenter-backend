@@ -1,10 +1,11 @@
 package com.cdeo.usercenter.service.impl;
-import java.util.ArrayList;
 import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.cdeo.usercenter.Model.domain.User;
+import com.cdeo.usercenter.common.BusinessException;
+import com.cdeo.usercenter.common.ErrorCode;
 import com.cdeo.usercenter.service.UserService;
 import com.cdeo.usercenter.mapper.UserMapper;
 import com.cdeo.usercenter.util.UserUtil;
@@ -42,29 +43,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public long registerUser(String userAccount, String password, String checkPassword) {
         // 1、非空
         if (StringUtils.isAnyEmpty(userAccount, password, checkPassword)) {
-            return -1;
+            throw new BusinessException(ErrorCode.NULL_PARAM_ERROR);
         }
 
         // 2. 账户长度 **不小于** 4 位
         if (userAccount.length() < 2) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 3. 密码就 **不小于** 8 位吧
         if (password.length() < 4 || checkPassword.length() < 4) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 用户不能包含特殊字符
         String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         if (matcher.find()) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 密码和第二次密码不相同
         if (!password.equals(checkPassword)) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 密码不能重复
@@ -72,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         userQueryWrapper.eq("user_account", userAccount);
         long count = this.count(userQueryWrapper);
         if (count > 0) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 密码加密
@@ -86,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         this.save(user);
 
         if (user.getId() < 0) {
-            return -1;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         return user.getId();
@@ -106,24 +107,24 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User loginUser(String userAccount, String password, HttpServletRequest request) {
         // 1、非空
         if (StringUtils.isAnyEmpty(userAccount, password)) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 2. 账户长度 **不小于** 2 位
         if (userAccount.length() < 2) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 3. 密码就 **不小于** 4 位吧
         if (password.length() < 4) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 用户不能包含特殊字符
         String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         if (matcher.find()) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 查询用户和密码是否匹配
@@ -136,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         User user = this.getOne(userQueryWrapper);
         if (user == null) {
-            return null;
+            throw new BusinessException(ErrorCode.PARAM_ERROR);
         }
 
         // 用户信息脱敏
@@ -152,7 +153,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Boolean deleteUser(Long userId, HttpServletRequest request) {
         User sessionUse = (User) request.getSession().getAttribute(SESSION_LOGIN_USER);
         if (!UserUtil.isAdmin(sessionUse)) {
-            return false;
+            throw new BusinessException(ErrorCode.NO_AUTH);
         }
 
         return this.removeById(userId);
@@ -169,7 +170,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User sessionUser = (User) request.getSession().getAttribute(SESSION_LOGIN_USER);
 
         if (!UserUtil.isAdmin(sessionUser)) {
-            return new ArrayList<>();
+            throw new BusinessException(ErrorCode.NO_AUTH);
         }
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
@@ -187,7 +188,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = (User) request.getSession().getAttribute(SESSION_LOGIN_USER);
 
         if (user == null) {
-            return null;
+            throw new BusinessException(ErrorCode.NO_LOGIN);
         }
 
         Long id = user.getId();

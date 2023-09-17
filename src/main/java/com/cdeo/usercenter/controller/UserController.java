@@ -3,6 +3,8 @@ package com.cdeo.usercenter.controller;
 import com.cdeo.usercenter.Model.domain.User;
 import com.cdeo.usercenter.Model.request.UserLoginRequest;
 import com.cdeo.usercenter.Model.request.UserRegisterRequest;
+import com.cdeo.usercenter.common.BaseResponse;
+import com.cdeo.usercenter.common.ResultUtils;
 import com.cdeo.usercenter.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +32,7 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/registerUser")
-    public Long registerUser(@RequestBody UserRegisterRequest userRegisterRequest) {
+    public BaseResponse<Long> registerUser(@RequestBody UserRegisterRequest userRegisterRequest) {
         String userAccount = userRegisterRequest.getUserAccount();
         String password = userRegisterRequest.getPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
@@ -38,7 +40,7 @@ public class UserController {
         if (StringUtils.isAnyEmpty(userAccount, password, checkPassword)) {
             return null;
         }
-        return userService.registerUser(userAccount, password, checkPassword);
+        return ResultUtils.success(userService.registerUser(userAccount, password, checkPassword));
     }
 
     /**
@@ -48,36 +50,36 @@ public class UserController {
      */
     @ResponseBody
     @PostMapping("/loginUser")
-    public User loginUser(@RequestBody UserLoginRequest loginRequest, HttpServletRequest request) {
+    public BaseResponse<User> loginUser(@RequestBody UserLoginRequest loginRequest, HttpServletRequest request) {
         String userAccount = loginRequest.getUserAccount();
         String password = loginRequest.getPassword();
 
         if (StringUtils.isAnyEmpty(userAccount, password)) {
             return null;
         }
-        return userService.loginUser(userAccount, password, request);
+        return ResultUtils.success(userService.loginUser(userAccount, password, request));
     }
 
     @PostMapping("/deleteUser")
-    public Boolean deleteUser(@RequestBody Long userId, HttpServletRequest httpServletRequest) {
+    public BaseResponse<Boolean> deleteUser(@RequestBody Long userId, HttpServletRequest httpServletRequest) {
 
-        return userService.deleteUser(userId, httpServletRequest);
+        return ResultUtils.success(userService.deleteUser(userId, httpServletRequest));
     }
 
     @PostMapping("/search")
-    public List<User> search(String username, HttpServletRequest httpServletRequest) {
-        return userService.searchUserList(username, httpServletRequest);
+    public BaseResponse<List<User>> search(String username, HttpServletRequest httpServletRequest) {
+        return ResultUtils.success(userService.searchUserList(username, httpServletRequest));
     }
 
     @ResponseBody
     @PostMapping("/currentUser")
-    public User currentUser(HttpServletRequest request) {
-        return userService.getCurrentUser(request);
+    public BaseResponse<User> currentUser(HttpServletRequest request) {
+        return ResultUtils.success(userService.getCurrentUser(request));
     }
 
     @PostMapping("/outLogin")
-    public Boolean outLogin(HttpServletRequest request) {
-        return userService.outLogin(request);
+    public BaseResponse<Boolean> outLogin(HttpServletRequest request) {
+        return ResultUtils.success(userService.outLogin(request));
     }
 
 
