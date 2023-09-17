@@ -75,4 +75,10 @@ public class UserController {
         return userService.getCurrentUser(request);
     }
 
+    @PostMapping("/outLogin")
+    public Boolean outLogin(HttpServletRequest request) {
+        return userService.outLogin(request);
+    }
+
+
 }

@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.cdeo.usercenter.util.UserConst.SALT;
-import static com.cdeo.usercenter.util.UserConst.SESSION_USER_ATTR_CODE;
+import static com.cdeo.usercenter.util.UserConst.SESSION_LOGIN_USER;
 
 /**
 * @author Coder guo
@@ -143,14 +143,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User handledUser = getSafeUser(user);
 
         // 设置信息到session中
-        request.getSession().setAttribute(SESSION_USER_ATTR_CODE, handledUser);
+        request.getSession().setAttribute(SESSION_LOGIN_USER, handledUser);
 
         return handledUser;
     }
 
     @Override
     public Boolean deleteUser(Long userId, HttpServletRequest request) {
-        User sessionUse = (User) request.getSession().getAttribute(SESSION_USER_ATTR_CODE);
+        User sessionUse = (User) request.getSession().getAttribute(SESSION_LOGIN_USER);
         if (!UserUtil.isAdmin(sessionUse)) {
             return false;
         }
@@ -166,7 +166,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Override
     public List<User> searchUserList(String username, HttpServletRequest request) {
-        User sessionUser = (User) request.getSession().getAttribute(SESSION_USER_ATTR_CODE);
+        User sessionUser = (User) request.getSession().getAttribute(SESSION_LOGIN_USER);
 
         if (!UserUtil.isAdmin(sessionUser)) {
             return new ArrayList<>();
@@ -184,7 +184,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     @Override
     public User getCurrentUser(HttpServletRequest request) {
-        User user = (User) request.getSession().getAttribute(SESSION_USER_ATTR_CODE);
+        User user = (User) request.getSession().getAttribute(SESSION_LOGIN_USER);
 
         if (user == null) {
             return null;
@@ -215,6 +215,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         handledUser.setUpdateTime(new Date());
 
         return handledUser;
+    }
+
+    @Override
+    public Boolean outLogin(HttpServletRequest request) {
+        request.getSession().setAttribute(SESSION_LOGIN_USER, null);
+        return true;
     }
 }
 
