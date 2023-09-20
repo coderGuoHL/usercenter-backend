@@ -1,7 +1,7 @@
 package com.cdeo.usercenter.service;
 import java.util.Date;
 
-import com.cdeo.usercenter.Model.domain.User;
+import com.cdeo.usercenter.model.domain.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +36,16 @@ class UserServiceTest {
     }
 
 
-    // 1. ÓÃ»§ÔÚÇ°¶ËÊäÈëÕË»§ºÍÃÜÂë¡¢ÒÔ¼°Ð£ÑéÂë£¨todo£©
-    // 2. Ð£ÑéÓÃ»§µÄÕË»§¡¢ÃÜÂë¡¢Ð£ÑéÃÜÂë£¬ÊÇ·ñ·ûºÏÒªÇó
-    //    1. ·Ç¿Õ
-    //    2. ÕË»§³¤¶È **²»Ð¡ÓÚ** 4 Î»
-    //    3. ÃÜÂë¾Í **²»Ð¡ÓÚ** 8 Î»°É
-    //    4. ÕË»§²»ÄÜÖØ¸´
-    //    5. ÕË»§²»°üº¬ÌØÊâ×Ö·û
-    //    6. ÃÜÂëºÍÐ£ÑéÃÜÂëÏàÍ¬
-    // 3. ¶ÔÃÜÂë½øÐÐ¼ÓÃÜ£¨ÃÜÂëÇ§Íò²»ÒªÖ±½ÓÒÔÃ÷ÎÄ´æ´¢µ½Êý¾Ý¿âÖÐ£©
-    // 4. ÏòÊý¾Ý¿â²åÈëÓÃ»§Êý¾Ý
+    // 1. ï¿½Ã»ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡¢ï¿½Ô¼ï¿½Ð£ï¿½ï¿½ï¿½ë£¨todoï¿½ï¿½
+    // 2. Ð£ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¡¢Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬ï¿½Ç·ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½
+    //    1. ï¿½Ç¿ï¿½
+    //    2. ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ **ï¿½ï¿½Ð¡ï¿½ï¿½** 4 Î»
+    //    3. ï¿½ï¿½ï¿½ï¿½ï¿½ **ï¿½ï¿½Ð¡ï¿½ï¿½** 8 Î»ï¿½ï¿½
+    //    4. ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
+    //    5. ï¿½Ë»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
+    //    6. ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬
+    // 3. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¼ï¿½ï¿½Ü£ï¿½ï¿½ï¿½ï¿½ï¿½Ç§ï¿½ï¿½ÒªÖ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä´æ´¢ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½Ð£ï¿½
+    // 4. ï¿½ï¿½ï¿½ï¿½ï¿½Ý¿ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
     @Test
     void registerUser() {
         String userAccount = "cdeoHero";

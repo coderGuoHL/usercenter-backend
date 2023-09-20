@@ -1,8 +1,8 @@
 package com.cdeo.usercenter.controller;
 
-import com.cdeo.usercenter.Model.domain.User;
-import com.cdeo.usercenter.Model.request.UserLoginRequest;
-import com.cdeo.usercenter.Model.request.UserRegisterRequest;
+import com.cdeo.usercenter.model.domain.User;
+import com.cdeo.usercenter.model.request.UserLoginRequest;
+import com.cdeo.usercenter.model.request.UserRegisterRequest;
 import com.cdeo.usercenter.common.BaseResponse;
 import com.cdeo.usercenter.common.ResultUtils;
 import com.cdeo.usercenter.service.UserService;

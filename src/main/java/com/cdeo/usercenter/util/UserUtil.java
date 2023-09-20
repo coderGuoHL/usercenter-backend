@@ -1,6 +1,6 @@
 package com.cdeo.usercenter.util;
 
-import com.cdeo.usercenter.Model.domain.User;
+import com.cdeo.usercenter.model.domain.User;
 
 public class UserUtil {
     public static Boolean isAdmin(User user) {

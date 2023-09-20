@@ -3,7 +3,7 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.cdeo.usercenter.Model.domain.User;
+import com.cdeo.usercenter.model.domain.User;
 import com.cdeo.usercenter.common.BusinessException;
 import com.cdeo.usercenter.common.ErrorCode;
 import com.cdeo.usercenter.service.UserService;

@@ -1,4 +1,4 @@
-package com.cdeo.usercenter.Model.request;
+package com.cdeo.usercenter.model.request;
 
 import lombok.Data;
 

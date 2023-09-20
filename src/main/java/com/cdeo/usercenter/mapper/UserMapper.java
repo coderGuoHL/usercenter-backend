@@ -1,7 +1,7 @@
 package com.cdeo.usercenter.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.cdeo.usercenter.Model.domain.User;
+import com.cdeo.usercenter.model.domain.User;
 
 /**
 * @author Coder guo
