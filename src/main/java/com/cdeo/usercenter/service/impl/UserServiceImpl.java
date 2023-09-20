@@ -43,29 +43,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public long registerUser(String userAccount, String password, String checkPassword) {
         // 1、非空
         if (StringUtils.isAnyEmpty(userAccount, password, checkPassword)) {
-            throw new BusinessException(ErrorCode.NULL_PARAM_ERROR);
+            throw new BusinessException(ErrorCode.NULL_PARAM_ERROR, "输入不能为空");
         }
 
         // 2. 账户长度 **不小于** 4 位
         if (userAccount.length() < 2) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "账户长度不能小于2位");
         }
 
         // 3. 密码就 **不小于** 8 位吧
         if (password.length() < 4 || checkPassword.length() < 4) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "密码长度不能小于8位");
         }
 
         // 用户不能包含特殊字符
         String validPattern = "[`~!@#$%^&*()+=|{}':;',\\\\[\\\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
         Matcher matcher = Pattern.compile(validPattern).matcher(userAccount);
         if (matcher.find()) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "账户不能包含特殊字符");
         }
 
         // 密码和第二次密码不相同
         if (!password.equals(checkPassword)) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "第二次输入密码和第一次不同");
         }
 
         // 密码不能重复
@@ -73,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         userQueryWrapper.eq("user_account", userAccount);
         long count = this.count(userQueryWrapper);
         if (count > 0) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "账户名不能重复");
         }
 
         // 密码加密
@@ -87,7 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         this.save(user);
 
         if (user.getId() < 0) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "注册失败，联系管理员");
         }
 
         return user.getId();
@@ -107,17 +107,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User loginUser(String userAccount, String password, HttpServletRequest request) {
         // 1、非空
         if (StringUtils.isAnyEmpty(userAccount, password)) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.NULL_PARAM_ERROR, "输入不能为空");
         }
 
         // 2. 账户长度 **不小于** 2 位
         if (userAccount.length() < 2) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "账户长度不能小于2位");
         }
 
         // 3. 密码就 **不小于** 4 位吧
         if (password.length() < 4) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "密码长度不能小于8位");
         }
 
         // 用户不能包含特殊字符
@@ -137,7 +137,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         User user = this.getOne(userQueryWrapper);
         if (user == null) {
-            throw new BusinessException(ErrorCode.PARAM_ERROR);
+            throw new BusinessException(ErrorCode.PARAM_ERROR, "用户信息不存在或者密码错误");
         }
 
         // 用户信息脱敏

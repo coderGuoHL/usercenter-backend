@@ -24,6 +24,10 @@ public class BusinessException extends RuntimeException {
         this.description = description;
     }
 
+    public BusinessException(ErrorCode errorCode, String description) {
+        this(errorCode.getMessage(), errorCode.getCode(), description);
+    }
+
     public String getCode() {
         return code;
     }
