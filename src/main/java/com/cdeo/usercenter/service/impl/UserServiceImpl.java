@@ -84,6 +84,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User user = new User();
         user.setUserAccount(userAccount);
         user.setPassword(encryptPassword);
+        user.setUsername(userAccount);
+        // 设定默认头像以及用户角色
+        user.setAvatarUrl("https://img1.baidu.com/it/u=712015748,3507541640&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=667");
+        user.setUserRole(1);
         this.save(user);
 
         if (user.getId() < 0) {
